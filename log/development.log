@@ -1,0 +1,398 @@
+  [4;36;1mSQL (0.9ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (27.1ms)[0m   [0;1mCREATE DATABASE `substruct_development` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET NAMES 'utf8'[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (183.7ms)[0m   [0;1mCREATE TABLE `affiliate_payments` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `created_at` datetime, `affiliate_id` int(11) DEFAULT 0 NOT NULL, `amount` float DEFAULT 0.0 NOT NULL, `notes` text) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (123.9ms)[0m   [0;1mCREATE TABLE `affiliates` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(15) DEFAULT '' NOT NULL, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL, `telephone` varchar(20), `address` varchar(255) DEFAULT '' NOT NULL, `city` varchar(50), `state` varchar(10), `zip` varchar(10), `email_address` varchar(50) DEFAULT '' NOT NULL, `tax_id` varchar(255), `company` varchar(255), `is_enabled` tinyint(1) DEFAULT 0, `created_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (82.3ms)[0m   [0;1mCREATE TABLE `content_node_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (74.3ms)[0m   [0;1mCREATE TABLE `content_nodes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(200) DEFAULT '' NOT NULL, `title` varchar(100) DEFAULT '' NOT NULL, `content` text, `display_on` datetime NOT NULL, `created_on` datetime NOT NULL, `type` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (136.9ms)[0m   [0mCREATE INDEX `name` ON `content_nodes` (`name`)[0m
+  [4;36;1mSQL (128.7ms)[0m   [0;1mCREATE INDEX `type` ON `content_nodes` (`type`, `id`)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (108.7ms)[0m   [0;1mCREATE TABLE `content_nodes_sections` (`content_node_id` int(11) DEFAULT 0 NOT NULL, `section_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (85.6ms)[0m   [0mCREATE INDEX `default` ON `content_nodes_sections` (`content_node_id`, `section_id`)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (72.3ms)[0m   [0mCREATE TABLE `countries` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `code` varchar(50), `rank` int(11), `is_obsolete` tinyint(1) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (90.2ms)[0m   [0mCREATE TABLE `items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(20) DEFAULT '' NOT NULL, `name` varchar(100) DEFAULT '' NOT NULL, `description` text, `price` float DEFAULT 0.0 NOT NULL, `date_available` datetime NOT NULL, `quantity` int(11) DEFAULT 0 NOT NULL, `size_width` float DEFAULT 0.0 NOT NULL, `size_height` float DEFAULT 0.0 NOT NULL, `size_depth` float DEFAULT 0.0 NOT NULL, `weight` float DEFAULT 0.0 NOT NULL, `type` varchar(40), `product_id` int(11) DEFAULT 0 NOT NULL, `is_discontinued` tinyint(1) DEFAULT 0 NOT NULL, `variation_quantity` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (102.3ms)[0m   [0;1mCREATE INDEX `published` ON `items` (`quantity`, `is_discontinued`, `variation_quantity`)[0m
+  [4;35;1mSQL (103.0ms)[0m   [0mCREATE INDEX `variation` ON `items` (`product_id`, `type`)[0m
+  [4;36;1mSQL (88.8ms)[0m   [0;1mCREATE INDEX `tag_view` ON `items` (`date_available`, `is_discontinued`, `quantity`, `variation_quantity`, `type`)[0m
+  [4;35;1mSQL (100.4ms)[0m   [0mCREATE INDEX `search` ON `items` (`name`, `code`, `is_discontinued`, `date_available`, `quantity`, `variation_quantity`, `type`)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (71.9ms)[0m   [0mCREATE TABLE `order_account_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(30) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (82.2ms)[0m   [0mCREATE TABLE `order_accounts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `order_account_type_id` int(11) DEFAULT 1 NOT NULL, `cc_number` varchar(255), `account_number` varchar(255), `expiration_month` smallint, `expiration_year` int(11), `credit_ccv` bigint, `routing_number` varchar(20), `bank_name` varchar(50)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (86.5ms)[0m   [0;1mCREATE INDEX `ids` ON `order_accounts` (`order_user_id`, `order_account_type_id`)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (72.5ms)[0m   [0;1mCREATE TABLE `order_addresses` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL, `telephone` varchar(20), `address` varchar(255) DEFAULT '' NOT NULL, `city` varchar(50), `state` varchar(30), `zip` varchar(10), `country_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (77.2ms)[0m   [0mCREATE INDEX `name` ON `order_addresses` (`first_name`, `last_name`)[0m
+  [4;36;1mSQL (99.5ms)[0m   [0;1mCREATE INDEX `countries` ON `order_addresses` (`country_id`, `order_user_id`)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (89.5ms)[0m   [0;1mCREATE TABLE `order_line_items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `item_id` int(11), `order_id` int(11) DEFAULT 0 NOT NULL, `quantity` int(11) DEFAULT 0 NOT NULL, `unit_price` float DEFAULT 0.0 NOT NULL, `name` varchar(255) DEFAULT '') ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (90.9ms)[0m   [0;1mCREATE TABLE `order_shipping_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `code` varchar(50), `is_domestic` tinyint(1) DEFAULT 1 NOT NULL, `price` float DEFAULT 0.0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (82.1ms)[0m   [0;1mCREATE TABLE `order_shipping_weights` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_shipping_type_id` int(11) DEFAULT 0 NOT NULL, `min_weight` float DEFAULT 0.0 NOT NULL, `max_weight` float DEFAULT 0.0 NOT NULL, `price` float DEFAULT 0.0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (107.3ms)[0m   [0;1mCREATE TABLE `order_status_codes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(30) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (94.0ms)[0m   [0mCREATE INDEX `name` ON `order_status_codes` (`name`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (96.3ms)[0m   [0mCREATE TABLE `order_users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `email_address` varchar(50) DEFAULT '' NOT NULL, `password` varchar(20), `created_on` datetime, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.0ms)[0m   [0;1mCREATE INDEX `email` ON `order_users` (`email_address`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (71.6ms)[0m   [0;1mCREATE TABLE `orders` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_number` int(11) DEFAULT 0 NOT NULL, `created_on` datetime, `shipped_on` datetime, `order_user_id` int(11), `order_status_code_id` int(11) DEFAULT 1 NOT NULL, `notes` text, `referer` varchar(255), `order_shipping_type_id` int(11) DEFAULT 1 NOT NULL, `product_cost` float DEFAULT 0.0, `shipping_cost` float DEFAULT 0.0, `tax` float DEFAULT 0.0 NOT NULL, `auth_transaction_id` varchar(255), `promotion_id` int(11) DEFAULT 0 NOT NULL, `shipping_address_id` int(11) DEFAULT 0 NOT NULL, `billing_address_id` int(11) DEFAULT 0 NOT NULL, `order_account_id` int(11) DEFAULT 0 NOT NULL, `affiliate_id` int(11) DEFAULT 0 NOT NULL, `affiliate_payment_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (85.1ms)[0m   [0mCREATE INDEX `order_number` ON `orders` (`order_number`)[0m
+  [4;36;1mSQL (76.1ms)[0m   [0;1mCREATE INDEX `order_user_id` ON `orders` (`order_user_id`)[0m
+  [4;35;1mSQL (83.3ms)[0m   [0mCREATE INDEX `status` ON `orders` (`order_status_code_id`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (79.5ms)[0m   [0mCREATE TABLE `plugin_schema_migrations` (`plugin_name` varchar(255), `version` varchar(255)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (74.6ms)[0m   [0mCREATE TABLE `preferences` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255) DEFAULT '' NOT NULL, `value` varchar(255) DEFAULT '') ENGINE=InnoDB[0m
+  [4;36;1mSQL (77.1ms)[0m   [0;1mCREATE INDEX `namevalue` ON `preferences` (`name`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (88.6ms)[0m   [0;1mCREATE TABLE `product_downloads` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `download_id` int(11) DEFAULT 0 NOT NULL, `product_id` int(11) DEFAULT 0 NOT NULL, `rank` int(11)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (85.2ms)[0m   [0mCREATE INDEX `pid` ON `product_downloads` (`product_id`)[0m
+  [4;36;1mSQL (83.7ms)[0m   [0;1mCREATE INDEX `did` ON `product_downloads` (`download_id`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (71.8ms)[0m   [0;1mCREATE TABLE `product_images` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `image_id` int(11) DEFAULT 0 NOT NULL, `product_id` int(11) DEFAULT 0 NOT NULL, `rank` int(11)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (80.1ms)[0m   [0mCREATE INDEX `main` ON `product_images` (`product_id`, `image_id`)[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (62.5ms)[0m   [0mCREATE TABLE `products_tags` (`product_id` int(11) DEFAULT 0 NOT NULL, `tag_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (69.0ms)[0m   [0;1mCREATE INDEX `product_tags` ON `products_tags` (`product_id`, `tag_id`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (72.8ms)[0m   [0;1mCREATE TABLE `promotions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(15) DEFAULT '' NOT NULL, `discount_type` int(11) DEFAULT 0 NOT NULL, `discount_amount` float DEFAULT 0.0 NOT NULL, `item_id` int(11), `start` datetime NOT NULL, `end` datetime NOT NULL, `minimum_cart_value` float, `description` varchar(255) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (63.7ms)[0m   [0;1mCREATE TABLE `questions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `short_question` varchar(255), `long_question` text, `answer` text, `rank` int(11), `featured` tinyint(1) DEFAULT 0 NOT NULL, `times_viewed` int(11) DEFAULT 0 NOT NULL, `created_on` datetime NOT NULL, `answered_on` datetime, `email_address` varchar(50)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (82.8ms)[0m   [0;1mCREATE TABLE `related_products` (`product_id` int(11) DEFAULT 0 NOT NULL, `related_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (84.1ms)[0m   [0mCREATE INDEX `related_products` ON `related_products` (`product_id`, `related_id`)[0m
+  [4;36;1mSQL (15.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (83.0ms)[0m   [0mCREATE TABLE `rights` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `controller` varchar(255), `actions` varchar(255)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (82.5ms)[0m   [0mCREATE TABLE `rights_roles` (`right_id` int(11), `role_id` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (90.4ms)[0m   [0mCREATE TABLE `roles` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `description` text) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (83.1ms)[0m   [0mCREATE TABLE `roles_users` (`role_id` int(11), `user_id` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (83.1ms)[0m   [0mCREATE TABLE `sections` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `rank` int(11), `parent_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (80.6ms)[0m   [0mCREATE TABLE `sessions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `sessid` varchar(255) DEFAULT '' NOT NULL, `data` text, `updated_at` datetime, `created_at` datetime) ENGINE=InnoDB[0m
+  [4;36;1mSQL (94.8ms)[0m   [0;1mCREATE INDEX `session_index` ON `sessions` (`sessid`)[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (88.9ms)[0m   [0;1mCREATE TABLE `tags` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `rank` int(11), `parent_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (84.9ms)[0m   [0mCREATE INDEX `name` ON `tags` (`name`)[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (72.3ms)[0m   [0mCREATE TABLE `user_uploads` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `filename` varchar(255), `width` int(11) DEFAULT 0 NOT NULL, `height` int(11) DEFAULT 0 NOT NULL, `type` varchar(255), `created_on` datetime, `parent_id` int(11), `content_type` varchar(255), `thumbnail` varchar(255), `size` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (76.8ms)[0m   [0;1mCREATE INDEX `creation` ON `user_uploads` (`created_on`, `type`)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (89.7ms)[0m   [0;1mCREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `login` varchar(50) DEFAULT '' NOT NULL, `password` varchar(40)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (77.4ms)[0m   [0mCREATE INDEX `login` ON `users` (`login`, `password`)[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (71.9ms)[0m   [0mCREATE TABLE `wishlist_items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `item_id` int(11) DEFAULT 0 NOT NULL, `created_on` datetime) ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.2ms)[0m   [0;1mCREATE INDEX `user` ON `wishlist_items` (`order_user_id`)[0m
+  [4;35;1mSQL (83.6ms)[0m   [0mCREATE INDEX `item` ON `wishlist_items` (`item_id`)[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (79.8ms)[0m   [0mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (86.0ms)[0m   [0;1mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM `schema_migrations`[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('20100210194537')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('1')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('2')[0m
+  [4;36;1mSQL (1.1ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('3')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('4')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('5')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('6')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('7')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('8')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('9')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('10')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('11')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('12')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('13')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('14')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('15')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('16')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('17')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('18')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('19')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('20')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('21')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('22')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('23')[0m
+  [4;35;1mSQL (1.0ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('24')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('25')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('26')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('27')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('28')[0m
+  [4;36;1mSQL (1.0ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('29')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('30')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('31')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('32')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('33')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('34')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('35')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('36')[0m
+  [4;36;1mContentNode Load (0.4ms)[0m   [0;1mSELECT * FROM `content_nodes` [0m
+  [4;35;1mCountry Load (0.2ms)[0m   [0mSELECT * FROM `countries` [0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` [0m
+  [4;35;1mOrderShippingType Load (0.2ms)[0m   [0mSELECT * FROM `order_shipping_types` [0m
+  [4;36;1mOrderShippingWeight Load (0.2ms)[0m   [0;1mSELECT * FROM `order_shipping_weights` [0m
+  [4;35;1mOrderStatusCode Load (0.2ms)[0m   [0mSELECT * FROM `order_status_codes` [0m
+  [4;36;1mRight Load (0.2ms)[0m   [0;1mSELECT * FROM `rights` [0m
+  [4;35;1mRole Load (0.2ms)[0m   [0mSELECT * FROM `roles` [0m
+  [4;36;1mTag Load (0.2ms)[0m   [0;1mSELECT * FROM `tags` [0m
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM `users` [0m
+  [4;36;1mSession Load (0.4ms)[0m   [0;1mSELECT * FROM `sessions` [0m
+  [4;35;1mSQL (0.5ms)[0m   [0m
+ INSERT INTO plugin_schema_migrations
+ VALUES('substruct', 36);
+ [0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mMysql::Error: Table 'substruct_development.plugin_schema_info' doesn't exist: 
+ INSERT INTO plugin_schema_info
+ VALUES('substruct', 36);
+ [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mPreference Columns (1.1ms)[0m   [0;1mSHOW FIELDS FROM `preferences`[0m
+  [4;35;1mPreference Load (0.3ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'use_smtp_tls_patch') LIMIT 1[0m
+  [4;36;1mPreference Load (0.3ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_host') LIMIT 1[0m
+  [4;35;1mPreference Load (0.2ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_port') LIMIT 1[0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_auth_type') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET NAMES 'utf8'[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (50.9ms)[0m   [0mDROP DATABASE IF EXISTS `substruct_development`[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE DATABASE `substruct_development` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET NAMES 'utf8'[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (79.7ms)[0m   [0;1mCREATE TABLE `affiliate_payments` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `created_at` datetime, `affiliate_id` int(11) DEFAULT 0 NOT NULL, `amount` float DEFAULT 0.0 NOT NULL, `notes` text) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (189.7ms)[0m   [0;1mCREATE TABLE `affiliates` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(15) DEFAULT '' NOT NULL, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL, `telephone` varchar(20), `address` varchar(255) DEFAULT '' NOT NULL, `city` varchar(50), `state` varchar(10), `zip` varchar(10), `email_address` varchar(50) DEFAULT '' NOT NULL, `tax_id` varchar(255), `company` varchar(255), `is_enabled` tinyint(1) DEFAULT 0, `created_at` datetime) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (66.1ms)[0m   [0;1mCREATE TABLE `content_node_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (82.7ms)[0m   [0;1mCREATE TABLE `content_nodes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(200) DEFAULT '' NOT NULL, `title` varchar(100) DEFAULT '' NOT NULL, `content` text, `display_on` datetime NOT NULL, `created_on` datetime NOT NULL, `type` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (77.3ms)[0m   [0mCREATE INDEX `name` ON `content_nodes` (`name`)[0m
+  [4;36;1mSQL (82.1ms)[0m   [0;1mCREATE INDEX `type` ON `content_nodes` (`type`, `id`)[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (81.3ms)[0m   [0;1mCREATE TABLE `content_nodes_sections` (`content_node_id` int(11) DEFAULT 0 NOT NULL, `section_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (98.3ms)[0m   [0mCREATE INDEX `default` ON `content_nodes_sections` (`content_node_id`, `section_id`)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (67.3ms)[0m   [0mCREATE TABLE `countries` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `code` varchar(50), `rank` int(11), `is_obsolete` tinyint(1) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (74.2ms)[0m   [0mCREATE TABLE `items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(20) DEFAULT '' NOT NULL, `name` varchar(100) DEFAULT '' NOT NULL, `description` text, `price` float DEFAULT 0.0 NOT NULL, `date_available` datetime NOT NULL, `quantity` int(11) DEFAULT 0 NOT NULL, `size_width` float DEFAULT 0.0 NOT NULL, `size_height` float DEFAULT 0.0 NOT NULL, `size_depth` float DEFAULT 0.0 NOT NULL, `weight` float DEFAULT 0.0 NOT NULL, `type` varchar(40), `product_id` int(11) DEFAULT 0 NOT NULL, `is_discontinued` tinyint(1) DEFAULT 0 NOT NULL, `variation_quantity` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (77.0ms)[0m   [0;1mCREATE INDEX `published` ON `items` (`quantity`, `is_discontinued`, `variation_quantity`)[0m
+  [4;35;1mSQL (91.7ms)[0m   [0mCREATE INDEX `variation` ON `items` (`product_id`, `type`)[0m
+  [4;36;1mSQL (75.2ms)[0m   [0;1mCREATE INDEX `tag_view` ON `items` (`date_available`, `is_discontinued`, `quantity`, `variation_quantity`, `type`)[0m
+  [4;35;1mSQL (75.3ms)[0m   [0mCREATE INDEX `search` ON `items` (`name`, `code`, `is_discontinued`, `date_available`, `quantity`, `variation_quantity`, `type`)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (80.2ms)[0m   [0mCREATE TABLE `order_account_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(30) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (82.5ms)[0m   [0mCREATE TABLE `order_accounts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `order_account_type_id` int(11) DEFAULT 1 NOT NULL, `cc_number` varchar(255), `account_number` varchar(255), `expiration_month` smallint, `expiration_year` int(11), `credit_ccv` bigint, `routing_number` varchar(20), `bank_name` varchar(50)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (91.3ms)[0m   [0;1mCREATE INDEX `ids` ON `order_accounts` (`order_user_id`, `order_account_type_id`)[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (83.6ms)[0m   [0;1mCREATE TABLE `order_addresses` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL, `telephone` varchar(20), `address` varchar(255) DEFAULT '' NOT NULL, `city` varchar(50), `state` varchar(30), `zip` varchar(10), `country_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (77.2ms)[0m   [0mCREATE INDEX `name` ON `order_addresses` (`first_name`, `last_name`)[0m
+  [4;36;1mSQL (66.0ms)[0m   [0;1mCREATE INDEX `countries` ON `order_addresses` (`country_id`, `order_user_id`)[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (82.0ms)[0m   [0;1mCREATE TABLE `order_line_items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `item_id` int(11), `order_id` int(11) DEFAULT 0 NOT NULL, `quantity` int(11) DEFAULT 0 NOT NULL, `unit_price` float DEFAULT 0.0 NOT NULL, `name` varchar(255) DEFAULT '') ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (98.7ms)[0m   [0;1mCREATE TABLE `order_shipping_types` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `code` varchar(50), `is_domestic` tinyint(1) DEFAULT 1 NOT NULL, `price` float DEFAULT 0.0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (91.0ms)[0m   [0;1mCREATE TABLE `order_shipping_weights` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_shipping_type_id` int(11) DEFAULT 0 NOT NULL, `min_weight` float DEFAULT 0.0 NOT NULL, `max_weight` float DEFAULT 0.0 NOT NULL, `price` float DEFAULT 0.0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (74.0ms)[0m   [0;1mCREATE TABLE `order_status_codes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(30) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (78.0ms)[0m   [0mCREATE INDEX `name` ON `order_status_codes` (`name`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (79.3ms)[0m   [0mCREATE TABLE `order_users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `email_address` varchar(50) DEFAULT '' NOT NULL, `password` varchar(20), `created_on` datetime, `first_name` varchar(50) DEFAULT '' NOT NULL, `last_name` varchar(50) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (86.3ms)[0m   [0;1mCREATE INDEX `email` ON `order_users` (`email_address`)[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (87.6ms)[0m   [0;1mCREATE TABLE `orders` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_number` int(11) DEFAULT 0 NOT NULL, `created_on` datetime, `shipped_on` datetime, `order_user_id` int(11), `order_status_code_id` int(11) DEFAULT 1 NOT NULL, `notes` text, `referer` varchar(255), `order_shipping_type_id` int(11) DEFAULT 1 NOT NULL, `product_cost` float DEFAULT 0.0, `shipping_cost` float DEFAULT 0.0, `tax` float DEFAULT 0.0 NOT NULL, `auth_transaction_id` varchar(255), `promotion_id` int(11) DEFAULT 0 NOT NULL, `shipping_address_id` int(11) DEFAULT 0 NOT NULL, `billing_address_id` int(11) DEFAULT 0 NOT NULL, `order_account_id` int(11) DEFAULT 0 NOT NULL, `affiliate_id` int(11) DEFAULT 0 NOT NULL, `affiliate_payment_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (77.4ms)[0m   [0mCREATE INDEX `order_number` ON `orders` (`order_number`)[0m
+  [4;36;1mSQL (83.4ms)[0m   [0;1mCREATE INDEX `order_user_id` ON `orders` (`order_user_id`)[0m
+  [4;35;1mSQL (82.7ms)[0m   [0mCREATE INDEX `status` ON `orders` (`order_status_code_id`)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (80.1ms)[0m   [0mCREATE TABLE `plugin_schema_migrations` (`plugin_name` varchar(255), `version` varchar(255)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (83.1ms)[0m   [0mCREATE TABLE `preferences` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255) DEFAULT '' NOT NULL, `value` varchar(255) DEFAULT '') ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.6ms)[0m   [0;1mCREATE INDEX `namevalue` ON `preferences` (`name`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (71.5ms)[0m   [0;1mCREATE TABLE `product_downloads` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `download_id` int(11) DEFAULT 0 NOT NULL, `product_id` int(11) DEFAULT 0 NOT NULL, `rank` int(11)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (85.7ms)[0m   [0mCREATE INDEX `pid` ON `product_downloads` (`product_id`)[0m
+  [4;36;1mSQL (75.5ms)[0m   [0;1mCREATE INDEX `did` ON `product_downloads` (`download_id`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (72.6ms)[0m   [0;1mCREATE TABLE `product_images` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `image_id` int(11) DEFAULT 0 NOT NULL, `product_id` int(11) DEFAULT 0 NOT NULL, `rank` int(11)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (70.3ms)[0m   [0mCREATE INDEX `main` ON `product_images` (`product_id`, `image_id`)[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (71.7ms)[0m   [0mCREATE TABLE `products_tags` (`product_id` int(11) DEFAULT 0 NOT NULL, `tag_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (77.0ms)[0m   [0;1mCREATE INDEX `product_tags` ON `products_tags` (`product_id`, `tag_id`)[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (63.7ms)[0m   [0;1mCREATE TABLE `promotions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `code` varchar(15) DEFAULT '' NOT NULL, `discount_type` int(11) DEFAULT 0 NOT NULL, `discount_amount` float DEFAULT 0.0 NOT NULL, `item_id` int(11), `start` datetime NOT NULL, `end` datetime NOT NULL, `minimum_cart_value` float, `description` varchar(255) DEFAULT '' NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (81.8ms)[0m   [0;1mCREATE TABLE `questions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `short_question` varchar(255), `long_question` text, `answer` text, `rank` int(11), `featured` tinyint(1) DEFAULT 0 NOT NULL, `times_viewed` int(11) DEFAULT 0 NOT NULL, `created_on` datetime NOT NULL, `answered_on` datetime, `email_address` varchar(50)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (74.3ms)[0m   [0;1mCREATE TABLE `related_products` (`product_id` int(11) DEFAULT 0 NOT NULL, `related_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (76.6ms)[0m   [0mCREATE INDEX `related_products` ON `related_products` (`product_id`, `related_id`)[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (80.8ms)[0m   [0mCREATE TABLE `rights` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `controller` varchar(255), `actions` varchar(255)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (75.7ms)[0m   [0mCREATE TABLE `rights_roles` (`right_id` int(11), `role_id` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (89.3ms)[0m   [0mCREATE TABLE `roles` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `description` text) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (265.9ms)[0m   [0mCREATE TABLE `roles_users` (`role_id` int(11), `user_id` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (76.6ms)[0m   [0mCREATE TABLE `sections` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `rank` int(11), `parent_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (106.7ms)[0m   [0mCREATE TABLE `sessions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `sessid` varchar(255) DEFAULT '' NOT NULL, `data` text, `updated_at` datetime, `created_at` datetime) ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.6ms)[0m   [0;1mCREATE INDEX `session_index` ON `sessions` (`sessid`)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (81.1ms)[0m   [0;1mCREATE TABLE `tags` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(100) DEFAULT '' NOT NULL, `rank` int(11), `parent_id` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB[0m
+  [4;35;1mSQL (86.3ms)[0m   [0mCREATE INDEX `name` ON `tags` (`name`)[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (79.4ms)[0m   [0mCREATE TABLE `user_uploads` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `filename` varchar(255), `width` int(11) DEFAULT 0 NOT NULL, `height` int(11) DEFAULT 0 NOT NULL, `type` varchar(255), `created_on` datetime, `parent_id` int(11), `content_type` varchar(255), `thumbnail` varchar(255), `size` int(11)) ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.6ms)[0m   [0;1mCREATE INDEX `creation` ON `user_uploads` (`created_on`, `type`)[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (88.2ms)[0m   [0;1mCREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `login` varchar(50) DEFAULT '' NOT NULL, `password` varchar(40)) ENGINE=InnoDB[0m
+  [4;35;1mSQL (69.0ms)[0m   [0mCREATE INDEX `login` ON `users` (`login`, `password`)[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (71.8ms)[0m   [0mCREATE TABLE `wishlist_items` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `order_user_id` int(11) DEFAULT 0 NOT NULL, `item_id` int(11) DEFAULT 0 NOT NULL, `created_on` datetime) ENGINE=InnoDB[0m
+  [4;36;1mSQL (69.6ms)[0m   [0;1mCREATE INDEX `user` ON `wishlist_items` (`order_user_id`)[0m
+  [4;35;1mSQL (74.8ms)[0m   [0mCREATE INDEX `item` ON `wishlist_items` (`item_id`)[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (71.4ms)[0m   [0mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [4;36;1mSQL (85.9ms)[0m   [0;1mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM `schema_migrations`[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('20100210194537')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('1')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('2')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('3')[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('4')[0m
+  [4;36;1mSQL (0.8ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('5')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('6')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('7')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('8')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('9')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('10')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('11')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('12')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('13')[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('14')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('15')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('16')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('17')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('18')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('19')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('20')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('21')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('22')[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('23')[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('24')[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('25')[0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('26')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('27')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('28')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('29')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('30')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('31')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('32')[0m
+  [4;36;1mSQL (0.9ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('33')[0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('34')[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mINSERT INTO `schema_migrations` (version) VALUES ('35')[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO `schema_migrations` (version) VALUES ('36')[0m
+  [4;36;1mContentNode Load (0.3ms)[0m   [0;1mSELECT * FROM `content_nodes` [0m
+  [4;35;1mCountry Load (0.2ms)[0m   [0mSELECT * FROM `countries` [0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` [0m
+  [4;35;1mOrderShippingType Load (0.2ms)[0m   [0mSELECT * FROM `order_shipping_types` [0m
+  [4;36;1mOrderShippingWeight Load (0.4ms)[0m   [0;1mSELECT * FROM `order_shipping_weights` [0m
+  [4;35;1mOrderStatusCode Load (0.2ms)[0m   [0mSELECT * FROM `order_status_codes` [0m
+  [4;36;1mRight Load (0.2ms)[0m   [0;1mSELECT * FROM `rights` [0m
+  [4;35;1mRole Load (0.2ms)[0m   [0mSELECT * FROM `roles` [0m
+  [4;36;1mTag Load (0.3ms)[0m   [0;1mSELECT * FROM `tags` [0m
+  [4;35;1mUser Load (0.2ms)[0m   [0mSELECT * FROM `users` [0m
+  [4;36;1mSession Load (0.2ms)[0m   [0;1mSELECT * FROM `sessions` [0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mPreference Columns (1.3ms)[0m   [0;1mSHOW FIELDS FROM `preferences`[0m
+  [4;35;1mPreference Load (0.3ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'use_smtp_tls_patch') LIMIT 1[0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_host') LIMIT 1[0m
+  [4;35;1mPreference Load (0.2ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_port') LIMIT 1[0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_auth_type') LIMIT 1[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET NAMES 'utf8'[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+
+
+Processing ContentNodesController#show_by_name (for 127.0.0.1 at 2010-03-24 00:12:54) [GET]
+  Parameters: {"name"=>"home"}
+  [4;35;1mSection Load (0.6ms)[0m   [0mSELECT * FROM `sections` WHERE (parent_id IS NULL OR parent_id = 0) ORDER BY -rank DESC[0m
+  [4;36;1mContentNode Load (0.2ms)[0m   [0;1mSELECT * FROM `content_nodes` WHERE (name = 'home') LIMIT 1[0m
+  [4;35;1mContentNode Columns (1.1ms)[0m   [0mSHOW FIELDS FROM `content_nodes`[0m
+  [4;36;1mPage Columns (0.9ms)[0m   [0;1mSHOW FIELDS FROM `content_nodes`[0m
+Rendering template within layouts/main
+Rendering content_nodes/show_by_name
+
+ActionView::TemplateError (You have a nil object when you didn't expect it!
+You might have expected an instance of Array.
+The error occurred while evaluating nil.each_index) on line #65 of app/views/layouts/main.rhtml:
+62: 					<li class="<%= @cname == 'main' ? 'active' : '' %>"><a href="/">Home</a></li>
+63: 					<li class="<%= (@cname == 'store' && @aname == 'index') ? 'active' : '' %>"><a href="/store">All Products</a></li>
+64: 					<% 
+65: 						@main_nav_tags.each_index do |i| 
+66: 							tag = @main_nav_tags[i]
+67: 					%>
+68: 						<li
+
+    app/views/layouts/main.rhtml:65:in `_run_rhtml_app47views47layouts47main46rhtml'
+    app/controllers/content_nodes_controller.rb:27:in `show_by_name'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:162:in `start'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:95:in `start'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:92:in `each'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:92:in `start'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:23:in `start'
+    /Users/elad/.rvm/rubies/ruby-1.8.7-p249/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendered rescues/_trace (32.5ms)
+Rendered rescues/_request_and_response (0.9ms)
+Rendering rescues/layout (internal_server_error)
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mPreference Columns (1.1ms)[0m   [0;1mSHOW FIELDS FROM `preferences`[0m
+  [4;35;1mPreference Load (0.2ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'use_smtp_tls_patch') LIMIT 1[0m
+  [4;36;1mPreference Load (0.3ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_host') LIMIT 1[0m
+  [4;35;1mPreference Load (0.1ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_port') LIMIT 1[0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_auth_type') LIMIT 1[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mPreference Columns (1.2ms)[0m   [0;1mSHOW FIELDS FROM `preferences`[0m
+  [4;35;1mPreference Load (0.3ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'use_smtp_tls_patch') LIMIT 1[0m
+  [4;36;1mPreference Load (0.3ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_host') LIMIT 1[0m
+  [4;35;1mPreference Load (0.2ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_port') LIMIT 1[0m
+  [4;36;1mPreference Load (0.2ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_auth_type') LIMIT 1[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mPreference Columns (1.0ms)[0m   [0;1mSHOW FIELDS FROM `preferences`[0m
+  [4;35;1mPreference Load (0.2ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'use_smtp_tls_patch') LIMIT 1[0m
+  [4;36;1mPreference Load (0.4ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_host') LIMIT 1[0m
+  [4;35;1mPreference Load (0.3ms)[0m   [0mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_port') LIMIT 1[0m
+  [4;36;1mPreference Load (0.3ms)[0m   [0;1mSELECT * FROM `preferences` WHERE (`preferences`.`name` = 'mail_auth_type') LIMIT 1[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSHOW TABLES[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mSELECT version FROM schema_migrations[0m

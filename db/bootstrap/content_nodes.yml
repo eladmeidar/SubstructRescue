@@ -1,0 +1,61 @@
+--- 
+order_receipt: 
+  name: OrderReceipt
+  created_on: 2001-01-01 00:00:00 -08:00
+  title: Thank you for your order!
+  type: Snippet
+  id: 1
+  display_on: 2001-01-01 00:00:00 -08:00
+  content: |
+    You will be billed via credit card.
+affiliate_terms: 
+  name: AffiliateTermsAndConditions
+  created_on: 2006-02-16 21:56:50 -08:00
+  title: Affiliate Terms and Conditions
+  type: Snippet
+  id: 2
+  display_on: 2006-02-16 00:00:00 -08:00
+  content: |
+    Customize this with your Affiliate Terms & Conditions
+    if you plan to run an Affiliate program.
+    
+    *TERMS*
+    
+    * Affiliates will be paid on the first of every month.
+    * Payment will be made on all completed orders 90 days after order completion at a rate of 5% total order cost.
+
+home_page: 
+  name: home
+  created_on: 2006-02-20 14:47:57 -08:00
+  title: Home
+  type: Page
+  id: 3
+  display_on: 2006-02-20 00:00:00 -08:00
+  content: |
+    <div id="fullContent">
+    
+    h1. Welcome to Substruct
+    
+    <div class="padLeft">
+    If you can see this, you've probably set things up correctly.
+    
+    *Substruct is a...*
+    
+    * Content Management System, including Blog capabilities
+    * E-commerce Engine that...
+    ** Processes credit cards through Authorize.net
+    ** Allows for inventory management
+    ** Has hooks to tie into fulfillment houses
+    * Q/A system including FAQ management
+    
+    </div>
+    
+    h2. Templates
+    
+    <div class="padLeft">
+    
+    Substruct ships with a variety of default templates. You'll probably want to use these as a base for your own custom ones.
+    
+    <a href="http://dev.subimage.com/projects/substruct/wiki/Customizing">Click here to learn more about customizing Substruct</a>.
+    </div>
+    </div>
